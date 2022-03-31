@@ -16,4 +16,5 @@ Include: yum
 %post
     echo "Hello from inside the container"
     yum -y groupinstall 'Development Tools'
-    yum -y install vim zsh rpmdevtools
+    yum -y install vim zsh rpmdevtools iputils nmap-ncat telnet
+
