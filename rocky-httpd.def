@@ -33,11 +33,11 @@ httpd
 # $HOME/httpd/var/www/html/index.html
 
 # shell mode test:
-# sudo singularity shell -B /home/sendai/httpd/var/log:/var/log -B /home/sendai/httpd/var/www:/var/www -B /home/sendai/httpd/run:/run rocky-httpd
+# sudo singularity shell -B $HOME/httpd/var/log:/var/log -B $HOME/httpd/var/www:/var/www -B $HOME/httpd/run:/run rocky-httpd
 
 # instance mode:
 # if $HOME/httpd was used in  sudo singularity, remove all files except html document in DocumentRoot ($HOME/var/www/html/)
 # (start) (not root user)
-# singularity instance start -B /home/sendai/httpd/var/log:/var/log -B /home/sendai/httpd/var/www:/var/www -B /home/sendai/httpd/run:/run rocky-httpd httpd
+# singularity instance start -B $HOME/httpd/var/log:/var/log -B $HOME/httpd/var/www:/var/www -B $HOME/httpd/run:/run rocky-httpd myhttpd
 # (stop) (not root user)
-# singularity instance stop httpd
+# singularity instance stop myhttpd
