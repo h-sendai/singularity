@@ -3,6 +3,9 @@
 以下、コマンドはapptainerを使う場合には
 singularityのかわりにapptainerを使う。
 
+（注）AlmaLinux 9ではsingularity-ceパッケージと
+apptainerパッケージは同時にはセットすることはできない。
+
 ## 走らせ方
 
 ```
