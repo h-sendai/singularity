@@ -1,0 +1,20 @@
+BootStrap: yum
+#OSVersion: 9
+#MirrorURL: http://mirror.centos.org/centos-%{OSVERSION}/%{OSVERSION}/os/x86_64/
+#MirrorURL: http://ftp.riken.jp/Linux/centos-stream/9-stream/BaseOS/x86_64/os/
+MirrorURL: http://ftp.riken.jp/Linux/almalinux/9/BaseOS/x86_64/os/
+Include: yum
+
+# If you want the updates (available at the bootstrap date) to be installed
+# inside the container during the bootstrap instead of the General Availability
+# point release (7.x) then uncomment the following line
+#UpdateURL: http://mirror.centos.org/centos-%{OSVERSION}/%{OSVERSION}/updates/$basearch/
+
+%runscript
+    echo "This is what happens when you run the container..."
+
+
+%post
+    echo "Hello from inside the container"
+    yum -y groupinstall 'Development Tools'
+    yum -y install vim zsh rpmdevtools iputils nmap-ncat telnet jq wget openssl-devel python3-pip python3-devel
