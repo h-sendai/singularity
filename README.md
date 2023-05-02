@@ -50,7 +50,8 @@ alma9-min.sif*
 alma9-min.sif: a /usr/bin/env run-singularity script executable (binary data)
 ```
 
-alma9-min.sifファイルができている。
+alma9-min.sifファイルができている
+（sif: Singularity Image Format）。
 
 （注）ダウンロードしたファイルは``$HOME/.apptainer/``以下に保存されていて
 次回以降キャッシュとして利用される。
