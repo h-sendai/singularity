@@ -160,6 +160,11 @@ sudo apptainer build --sandbox almalinux9 almalinux9.def
 とするとカレントディレクトリにalmalinux9というディレクトリができて
 AlmaLinux 9がセットされているはず。
 
+(注) 上のdefファイルではyumあるいはdnfを使ってパッケージを取得する。
+yumあるいはdnfがないシステム（たとえばArch Linux）ではホスト側に
+yum、dnfをインストールする必要がある（Arch Linuxでは
+``pacman -S dnf``）。（注おわり）
+
 ### shellで走らせてみる
 
 ```
