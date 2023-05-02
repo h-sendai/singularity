@@ -284,12 +284,15 @@ Include: yum
 
 のときの動作。
 上のdefファイルではインストールするパッケージを指定していないが、
-singularityのコードをみると
+apptainerのコードをみると
 ```
 conveyorPacker_yum.go:    include = `/etc/redhat-release coreutils
     ` + include
 ```
-というのがあるので、デフォルトでいれるRPMパッケージは
+というのがある
+[https://github.com/apptainer/apptainer/blob/main/internal/pkg/build/sources/conveyorPacker_yum.go#L199](github上へのソース)。
+
+デフォルトでいれるRPMパッケージは
 - coreutils
 - /etc/redhat-releaseがはいっているRPMパッケージ
 - ``include``にyumが入っているのでyumパッケージ
