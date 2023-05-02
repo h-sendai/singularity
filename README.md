@@ -174,3 +174,35 @@ sudo apptainer shell --writable almalinux9
 ```
 sudo apptainer build almalinux9.sif almalinux9
 ```
+
+## おまけ
+
+最小defファイル
+```
+BootStrap: yum
+MirrorURL: http://ftp.riken.jp/Linux/centos-stream/9-stream/BaseOS/x86_64/os/
+Include: yum
+```
+
+のときの動作。
+上のdefファイルではインストールするパッケージを指定していないが、
+singularityのコードをみると
+```
+conveyorPacker_yum.go:    include = `/etc/redhat-release coreutils
+    ` + include
+```
+というのがあるので、デフォルトでいれるRPMパッケージは
+- coreutils
+- /etc/redhat-releaseがはいっているRPMパッケージ
+- ``include``にyumが入っているのでyumパッケージ
+をインストールするようだ。
+
+AlmaLinux上で
+```
+yum install /etc/redhat-release coreutils yum \
+--installroot=/home/test --releasever=/
+```
+とすると消費するディスク量がわかる。
+coreutilsの依存物などでAlmaLinux 9では153個のRPMパッケージ
+が入り、/usrで257MB消費する。
+パッケージキャッシュがはいっている/varは85MB消費する。
