@@ -180,11 +180,17 @@ sudo apptainer build almalinux9.sif almalinux9
 apptainer fakerootオプション:
 https://apptainer.org/docs/user/1.0/fakeroot.html
 
-使うには``/etc/subuid``の整備が必要。
+使うには``/etc/subuid``、``/etc/subgid``の整備が必要。
 ``useradd``などのツールを使ってユーザーを登録すると
 自動的に``/etc/subuid``にも追加してくれる。
 ``userdel``でユーザーを消すとそのユーザーの行が
 ``/etc/subuid``から消える。
+
+追加には``usermod``コマンドも使える。
+例:
+```
+usermod --add-subuids 100000-165535 --add-subgids 100000-165535 you
+```
 
 ``/etc/subuid``の例:
 ```
