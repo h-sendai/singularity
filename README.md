@@ -119,27 +119,47 @@ A    bin  environment  home  lib64  mnt  proc  run   singularity  sys  usr
 afs  dev  etc	       lib   media  opt  root  sbin  srv	  tmp  var
 ```
 
-## defファイル
+## 自力でイメージを作る
 
-以下、コマンドはapptainerを使う場合には
-singularityのかわりにapptainerを使う。
+dockerその他からイメージをダウンロードしてそれを
+もとに自分用イメージを作れるが、ときとしてダウンロード
+したイメージが使えないことがある。
 
-（注）AlmaLinux 9ではsingularity-ceパッケージと
-apptainerパッケージは同時にはセットすることはできない。
+（例）
+RedisTimeSeriesをコンパイルしようとすると
+途中でcurlパッケージがあるかどうか調べる。
+はいっていなければ``yum install curl``でインストールを
+試みる。``docker://almalinux/9-base``はcurlパッケージ
+ではなく、curl-minimalパッケージが入っていて
+``yum install curl``が失敗する。がyumが
+curlを使うのでcurl-minimalが入っている環境では
+手動で``yum remove curl-minimal``することができない。
+（例おわり）
 
-## 走らせ方
+イメージ作成にはまずdefファイルを作る。
+
+### defファイルの例
+
+- [almalinux9.def](almalinux9.def)
+- [rocky-httpd.def](rocky-httpd.def)
+
+``%post``セクションに自分が必要とする
+パッケージをインストールするyumコマンドを書く
+（``yum -y``としてインタラクションが発生しないようにする）。
+
+### defファイルの使い方
 
 ```
-sudo singularity build --sandbox almalinux9 almalinux9.def
+sudo apptainer build --sandbox almalinux9 almalinux9.def
 ```
 
 とするとカレントディレクトリにalmalinux9というディレクトリができて
 AlmaLinux 9がセットされているはず。
 
-## shellで走らせてみる
+### shellで走らせてみる
 
 ```
-sudo singularity shell --writable almalinux9
+sudo apptainer shell --writable almalinux9
 ```
 
 とするとalmalinux9の中に入れていろいろ作業できる
@@ -148,5 +168,5 @@ sudo singularity shell --writable almalinux9
 作業後、sifイメージを作るには
 
 ```
-sudo singularity build almalinux9.sif almalinux9
+sudo apptainer build almalinux9.sif almalinux9
 ```
