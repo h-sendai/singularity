@@ -290,7 +290,7 @@ conveyorPacker_yum.go:    include = `/etc/redhat-release coreutils
     ` + include
 ```
 というのがある
-[https://github.com/apptainer/apptainer/blob/main/internal/pkg/build/sources/conveyorPacker_yum.go#L199](github上へのソース)。
+[github上へのソース](https://github.com/apptainer/apptainer/blob/main/internal/pkg/build/sources/conveyorPacker_yum.go#L199)
 
 デフォルトでいれるRPMパッケージは
 - coreutils
