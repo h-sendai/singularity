@@ -138,6 +138,9 @@ curlを使うのでcurl-minimalが入っている環境では
 
 イメージ作成にはまずdefファイルを作る。
 
+Apptainer Definition File:
+https://apptainer.org/docs/user/1.0/definition_files.html
+
 ### defファイルの例
 
 - [almalinux9.def](almalinux9.def)
