@@ -175,6 +175,62 @@ sudo apptainer shell --writable almalinux9
 sudo apptainer build almalinux9.sif almalinux9
 ```
 
+## --fakerootオプション
+
+apptainer fakerootオプション:
+https://apptainer.org/docs/user/1.0/fakeroot.html
+
+使うには``/etc/subuid``の整備が必要。
+``useradd``などのツールを使ってユーザーを登録すると
+自動的に``/etc/subuid``にも追加してくれる。
+``userdel``でユーザーを消すとそのユーザーの行が
+``/etc/subuid``から消える。
+
+``/etc/subuid``の例:
+```
+you:100000:65536
+you2:165536:65536
+```
+
+youユーザーはsubuidとして100000から100000+655536個分使う
+ことができる。
+
+you2ユーザーは165536から65536個使うことができる。
+
+これらが既存ホスト環境のUIDとかぶらないようにするのは
+管理者の責任になる（ようだ）。
+
+``/etc/subuid``が整備されていればrootにならずに
+
+```
+% apptainer build --sandbox --fakeroot alma9 almalinux9.def
+```
+で作った環境の/とかの所有者はroot:rootになる。
+
+実行:
+```
+% apptainer shell --fakeroot alma9
+```
+とすると``$HOME``が``/root``になっていて
+そこにはapptainerコマンドを実行したユーザーのホームディレクトリが
+ある。
+
+```console
+% apptainer shell --fakeroot alma9
+INFO:    underlay of /etc/localtime required more than 50 (177) bind mounts
+Apptainer> touch ABC
+Apptainer> ls -ld ABC
+-rw-rw-r--. 1 root root 0 May  2 14:39 ABC
+Apptainer> 
+```
+
+apptainer環境を抜けると上のABCファイルは
+```
+host% ls -l ~/ABC
+-rw-rw-r--. 1 you you 0 May  2 14:39 /home/you/ABC
+```
+となっている。
+
 ## おまけ
 
 最小defファイル
