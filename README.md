@@ -240,6 +240,39 @@ host% ls -l ~/ABC
 コンテナ環境の/usr/local/binにインストールするなどが
 sudoなしにできるようになっている。
 
+sifイメージの作成は``--fakeroot``をつけて
+```
+apptainer build --fakeroot alma9.sif alma9
+```
+とすればよい。
+
+## Singularity/Apptainerの違い（か？）
+
+AlmaLinux 9でdnf install singurality-ceで入る
+singularity-ce 3.11.1-1.el9
+とApptainer
+apptainer-1.1.7-1.el9.x86_64
+の違い（か？）
+
+Apptainerで作ったAlmaLinux 9 'minimal install' + 'Development Tool"
+の2GBのsifファイルをsingularityで使うと
+```
+singularity shell alma9.sif
+```
+はすぐプロンプトがでたが
+```
+singularity shell --fakeroot alma9.sif
+```
+は
+```
+INFO:    Converting SIF file to temporary sandbox...
+```
+とでてvmstatでみるとたしかに/tmp以下にファイルを展開している
+ようであった。
+
+``apptainer shell``は``--fakeroot``あるなしにかかわらずすぐに
+使えるようになる。
+
 ## おまけ
 
 最小defファイル
