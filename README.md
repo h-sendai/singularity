@@ -209,14 +209,14 @@ you2ユーザーは165536から65536個使うことができる。
 
 実行:
 ```
-% apptainer shell --fakeroot alma9
+% apptainer shell --writable --fakeroot alma9
 ```
 とすると``$HOME``が``/root``になっていて
 そこにはapptainerコマンドを実行したユーザーのホームディレクトリが
 ある。
 
 ```console
-% apptainer shell --fakeroot alma9
+% apptainer shell --writable --fakeroot alma9
 INFO:    underlay of /etc/localtime required more than 50 (177) bind mounts
 Apptainer> touch ABC
 Apptainer> ls -ld ABC
@@ -230,6 +230,15 @@ host% ls -l ~/ABC
 -rw-rw-r--. 1 you you 0 May  2 14:39 /home/you/ABC
 ```
 となっている。
+
+```
+% apptainer shell --writable --fakeroot alma9
+```
+
+でコンテナ環境にはいるとroot権限をもったのと同様に
+なっているのでプログラムをコンパイルして
+コンテナ環境の/usr/local/binにインストールするなどが
+sudoなしにできるようになっている。
 
 ## おまけ
 
