@@ -284,6 +284,48 @@ INFO:    Converting SIF file to temporary sandbox...
 ``apptainer shell``は``--fakeroot``あるなしにかかわらずすぐに
 使えるようになる。
 
+### build --sandboxでの--fakerootのあるなし
+
+Arch Linux上でapptainer 1.1.8で
+次のようなdefファイルを使って
+```
+BootStrap: yum
+#MirrorURL: http://ftp.riken.jp/Linux/almalinux/9/BaseOS/x86_64/os/
+MirrorURL: http://ftp.iij.ad.jp/pub/linux/almalinux/9/BaseOS/x86_64/os/
+Include: yum
+
+%runscript
+    echo "This is what happens when you run the container..."
+
+%post
+    echo "Hello from inside the container"
+    yum -y groupinstall 'Development Tools'
+    yum -y install vim zsh rpmdevtools iputils nmap-ncat telnet jq wget openssl-devel python3-pip python3-devel epel-release ncurses-devel
+```
+
+``--fakeroot``あるなしで``apptainer build --sandbox``
+を試してみた。コマンドは
+```
+apptainer build --sandbox alma9 almalinux9.def
+```
+および
+```
+apptainer build --sandbox --fakeroot alma9-fakeroot almalinux9.def
+```
+
+できたファイル群のパーミッションなどには違いはなかった。
+
+### --fakerootのときのマッピング
+
+/etc/subuid, /etc/subgidが
+```
+you:100000:65536
+```
+となっているとき``--fakeroot``のマッピングは
+コンテナ内gid 12のファイルは、コンテナ外だと
+100000+12-1 = 100011 になる。
+https://apptainer.org/docs/user/main/fakeroot.html
+
 ## おまけ
 
 最小defファイル
