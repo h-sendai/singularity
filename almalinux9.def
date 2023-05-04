@@ -16,5 +16,5 @@ Include: yum
 
 %post
     echo "Hello from inside the container"
-    yum -y groupinstall 'Development Tools'
-    yum -y install vim zsh rpmdevtools iputils nmap-ncat telnet jq wget openssl-devel python3-pip python3-devel
+    yum -y groupinstall 'Minimal Install' 'Development Tools'
+    yum -y install vim zsh rpmdevtools iputils nmap-ncat telnet jq wget openssl-devel python3-pip python3-devel ncurses-devel
