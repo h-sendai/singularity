@@ -185,6 +185,8 @@ sudo apptainer build almalinux9.sif almalinux9
 apptainer fakerootオプション:
 https://apptainer.org/docs/user/1.0/fakeroot.html
 
+### --fakerootオプションを使えるようにするためのセットアップ
+
 使うには``/etc/subuid``、``/etc/subgid``の整備が必要。
 ``useradd``などのツールを使ってユーザーを登録すると
 自動的に``/etc/subuid``にも追加してくれる。
@@ -256,6 +258,31 @@ sifイメージの作成は``--fakeroot``をつけて
 apptainer build --fakeroot alma9.sif alma9
 ```
 とすればよい。
+
+### 別の例: ownerがroot以外のディレクトリ、ファイルの例
+
+Almalinux 9のsandboxを作り、httpdをインストールすると
+``/var/cache/httpd/``ディレクトリができる。
+オーナーなどは``apptainer shell --fakeroot httpd``で
+起動したコンテナ内からみると次のようになっている:
+```
+Apptainer> ls -ld /var/cache/httpd
+drwx------. 3 apache apache 4096 May  8 09:21 /var/cache/httpd
+Apptainer> ls -ldn /var/cache/httpd
+drwx------. 3 48 48 4096 May  8 09:21 /var/cache/httpd
+Apptainer> grep apache /etc/passwd /etc/group
+/etc/passwd:apache:x:48:48:Apache:/usr/share/httpd:/sbin/nologin
+/etc/group:apache:x:48:
+```
+
+コンテナをぬけてホスト側からみると次のようになっている:
+```
+% ls -ld var/cache/httpd
+drwx------. 3 100047 100047 4096 May  8 09:21 var/cache/httpd/
+```
+
+このsandboxをホスト側から消そうとするとふつうに一般ユーザーでは
+消せないので、コンテナ内から消すか、sudoしてchownするなどして消す。
 
 ## Singularity/Apptainerの違い（か？）
 
