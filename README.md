@@ -411,6 +411,10 @@ bind (/run/screen/S-sendai/113685.pts-0.hspc01): Function not implemented
 
 ``apptainer shell --writable alma9.sif``はコンテナが起動しない。
 
+### tmux
+
+screenとは違ってtmuxはなにもせずに動く。
+
 ## おまけ
 
 最小defファイル
