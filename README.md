@@ -284,6 +284,29 @@ drwx------. 3 100047 100047 4096 May  8 09:21 var/cache/httpd/
 このsandboxをホスト側から消そうとするとふつうに一般ユーザーでは
 消せないので、コンテナ内から消すか、sudoしてchownするなどして消す。
 
+### tar xfでCannot change ownership to uid 123456というwarningがでる
+
+``apptainer shell --fakeroot almalinux9``
+で起動したコンテナ上で``tar xf less-663.tar.gz``として
+tarファイルを展開すると
+```
+Apptainer> tar xf less-633.tar.gz 
+tar: less-633/brac.c: Cannot change ownership to uid 197611, gid 197611: Invalid argument
+tar: less-633/ch.c: Cannot change ownership to uid 197611, gid 197611: Invalid argument
+```
+という警告がたくさんでる。展開自体はできている。
+
+警告がでないようにするには``tar xf --no-same-owner``で展開する。
+警告がでる理由は
+https://superuser.com/questions/1435437/
+から
+https://github.com/habitat-sh/builder/issues/365#issuecomment-382862233
+に書いてある。
+
+sandboxでソースを展開してコンパイルするのには``--fakeroot``
+オプションは必要ない。コンパイル後も``/usr/local/``等に
+インストールできる。
+
 ## Singularity/Apptainerの違い（か？）
 
 AlmaLinux 9でdnf install singurality-ceで入る
