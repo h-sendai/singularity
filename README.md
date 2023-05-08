@@ -392,7 +392,24 @@ apptainerコンテナ内で起動すると
 Apptainer> screen
 Directory '/run/screen' must have mode 777.
 ```
-とでて起動できない。``chmod 777 /run/screen``すると起動できるようになる。
+とでて起動できない。sandbox内で``chmod 777 /run/screen``したあと
+``apptainer build --fakeroot alma9.sif alma9``
+でイメージを作り、そのイメージをsandboxに展開:
+``apptainer build --sandbox alma9 alma9.sif``、
+shellで起動:
+``apptainer shell alma9``すると起動することを確認した。
+
+sandboxに展開せず、起動すると
+```
+% apptainer shell alma9-nestdaq.sif
+INFO:    underlay of /etc/localtime required more than 50 (178) bind mounts
+Apptainer> screen
+bind (/run/screen/S-sendai/113685.pts-0.hspc01): Function not implemented
+```
+
+となる。
+
+``apptainer shell --writable alma9.sif``はコンテナが起動しない。
 
 ## おまけ
 
