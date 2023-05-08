@@ -382,6 +382,18 @@ you:100000:65536
 100000+12-1 = 100011 になる。
 https://apptainer.org/docs/user/main/fakeroot.html
 
+## 個々のコマンドについてのメモ
+
+### screen
+
+AlmaLinux 9ではscreenパッケージは配布されていないが、EPELにパッケージがある。
+apptainerコンテナ内で起動すると
+```
+Apptainer> screen
+Directory '/run/screen' must have mode 777.
+```
+とでて起動できない。``chmod 777 /run/screen``すると起動できるようになる。
+
 ## おまけ
 
 最小defファイル
