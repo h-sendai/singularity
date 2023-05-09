@@ -112,6 +112,12 @@ INFO:    Creating SIF file...
 INFO:    Build complete: my.sif
 ```
 
+(注) build中に/tmpを使う。/tmpが独立パーティションになっていて
+容量が足りない場合は環境変数TMPDIR(あるいはAPPTAINER_TMPDIR)
+で空き容量に余裕があるディレクトリを指定できる。
+https://apptainer.org/docs/user/main/build_env.html#temporary-folders
+(注おわり)
+
 実行してみる:
 ```console
 % apptainer shell my.sif
