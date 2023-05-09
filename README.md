@@ -388,6 +388,20 @@ you:100000:65536
 100000+12-1 = 100011 になる。
 https://apptainer.org/docs/user/main/fakeroot.html
 
+## SELinux
+
+SELinuxがEnforcingになっているとsandbox内で
+``dnf install some-package``したときに
+```
+error: failed to exec scriptlet interpreter /bin/sh: Operation not permitted
+warning: %transfiletriggerin(glibc-common-2.34-40.el9_1.1.x86_64) scriptlet failed, exit status 127
+```
+というエラーがでる
+（この結果、セットされるパッケージとセットされないパッケージがある）。
+``sudo setenforce 0``でPermissive modeに移行してからsandboxを起動すると
+このエラーメッセージは出ない（パッケージは正常にセットされる）。
+SELinuxがenforcingのまま解決する方法は不明。
+
 ## 個々のコマンドについてのメモ
 
 ### screen
