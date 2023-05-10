@@ -1,3 +1,5 @@
+# Usage: apptainer build --sandbox almalinux9-nestdaq almalinux9-nestdaq.def
+
 BootStrap: yum
 MirrorURL: http://ftp.riken.jp/Linux/almalinux/9/BaseOS/x86_64/os/
 Include: yum
