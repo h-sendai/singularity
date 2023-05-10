@@ -112,6 +112,12 @@ INFO:    Creating SIF file...
 INFO:    Build complete: my.sif
 ```
 
+(注) build中に/tmpを使う。/tmpが独立パーティションになっていて
+容量が足りない場合は環境変数TMPDIR(あるいはAPPTAINER_TMPDIR)
+で空き容量に余裕があるディレクトリを指定できる。
+https://apptainer.org/docs/user/main/build_env.html#temporary-folders
+(注おわり)
+
 実行してみる:
 ```console
 % apptainer shell my.sif
@@ -381,6 +387,54 @@ you:100000:65536
 コンテナ内gid 12のファイルは、コンテナ外だと
 100000+12-1 = 100011 になる。
 https://apptainer.org/docs/user/main/fakeroot.html
+
+## SELinux
+
+SELinuxがEnforcingになっているとsandbox内で
+``dnf install some-package``したときに
+```
+error: failed to exec scriptlet interpreter /bin/sh: Operation not permitted
+warning: %transfiletriggerin(glibc-common-2.34-40.el9_1.1.x86_64) scriptlet failed, exit status 127
+```
+というエラーがでる
+（この結果、セットされるパッケージとセットされないパッケージがある）。
+``sudo setenforce 0``でPermissive modeに移行してからsandboxを起動すると
+このエラーメッセージは出ない（パッケージは正常にセットされる）。
+SELinuxがenforcingのまま解決する方法は不明。
+
+## 個々のコマンドについてのメモ
+
+### screen
+
+ターミナルマルチプレクサが必要なら設定なしに使えるtmuxを
+使うのが簡単。
+
+以下screenコマンドが必要な場合の話。
+AlmaLinux 9ではscreenパッケージは配布されていないが、EPELにパッケージがある。
+apptainerコンテナ内で起動すると
+```
+Apptainer> screen
+Directory '/run/screen' must have mode 777.
+```
+とでて起動できない。
+ワークアラウンドとして
+sandbox、sifイメージともに
+``--fakeroot``オプションなしに起動する場合は
+``mkdir $HOME/.screen; chmod 700 $HOME/.screen``して
+SCREENDIR環境変数をこのディレクトリにセットする
+（``export SCREENDIR=$HOME/.screen``）するのが簡単である。
+
+``--fakeroot``オプション付で起動する場合は
+（sandbox、sifイメージ共）SCREENDIR環境変数をセットしても
+```
+Apptainer> screen
+[screen is terminating]
+```
+となりすぐに終了してしまう（原因不明）。
+
+### tmux
+
+screenとは違ってtmuxはなにもせずに動く。
 
 ## おまけ
 
