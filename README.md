@@ -406,30 +406,31 @@ SELinuxがenforcingのまま解決する方法は不明。
 
 ### screen
 
+ターミナルマルチプレクサが必要なら設定なしに使えるtmuxを
+使うのが簡単。
+
+以下screenコマンドが必要な場合の話。
 AlmaLinux 9ではscreenパッケージは配布されていないが、EPELにパッケージがある。
 apptainerコンテナ内で起動すると
 ```
 Apptainer> screen
 Directory '/run/screen' must have mode 777.
 ```
-とでて起動できない。sandbox内で``chmod 777 /run/screen``したあと
-``apptainer build --fakeroot alma9.sif alma9``
-でイメージを作り、そのイメージをsandboxに展開:
-``apptainer build --sandbox alma9 alma9.sif``、
-shellで起動:
-``apptainer shell alma9``すると起動することを確認した。
+とでて起動できない。
+ワークアラウンドとして
+sandbox、sifイメージともに
+``--fakeroot``オプションなしに起動する場合は
+``mkdir $HOME/.screen; chmod 700 $HOME/.screen``して
+SCREENDIR環境変数をこのディレクトリにセットする
+（``export SCREENDIR=$HOME/.screen``）するのが簡単である。
 
-sandboxに展開せず、起動すると
+``--fakeroot``オプション付で起動する場合は
+（sandbox、sifイメージ共）SCREENDIR環境変数をセットしても
 ```
-% apptainer shell alma9-nestdaq.sif
-INFO:    underlay of /etc/localtime required more than 50 (178) bind mounts
 Apptainer> screen
-bind (/run/screen/S-sendai/113685.pts-0.hspc01): Function not implemented
+[screen is terminating]
 ```
-
-となる。
-
-``apptainer shell --writable alma9.sif``はコンテナが起動しない。
+となりすぐに終了してしまう（原因不明）。
 
 ### tmux
 
