@@ -15,6 +15,7 @@ ls -l1 /home    | sendai
 df /home        | tmpfs 16384    12     16372   1% /
 df /home/sendai | /dev/mapper/almalinux-root  14034944 11119552   2915392  80% /home
 touch /A        | NG: touch: cannot touch '/A': Read-only file system
+ls -l A in host | N/A
 write on $HOME  | OK: -rw-rw-r--. 1 sendai sendai 0 May  9 09:46 /home/sendai/A
 mkdir /home/foo | NG: mkdir: cannot create directory '/home/foo': Read-only file system
 dnf update etc. | NG: Error: This command has to be run with superuser privileges (under the root user on most systems).
@@ -27,7 +28,8 @@ ls $HOME        | host:/home/sendai
 ls -l1 /home    | sendai
 df /home        | tmpfs 16384    12     16372   1% /
 df /home/sendai | /dev/mapper/almalinux-root  14034944 11119552   2915392  80% /home
-touch /A        | OK: -rw-rw-r--. 1 sendai sendai 0 May  9 00:37 /A
+touch /A        | NG: touch: cannot touch '/A': Permission denied
+ls -l A in host | N/A
 write on $HOME  | OK: -rw-rw-r--. 1 sendai sendai 0 May  9 09:46 /home/sendai/A
 mkdir /home/foo | OK: drwxrwxr-x. 2 sendai sendai 40 May  9 00:51 /home/foo
                 | but disappear after restart (created on tmpfs)
@@ -42,6 +44,7 @@ ls -l1 /home    | empty
 df /home        | /dev/mapper/almalinux-root  14034944 11119552   2915392  80% /home
 df /root        | /dev/mapper/almalinux-root  14034944 11119552   2915392  80% /home
 touch /A        | NG: touch: cannot touch '/A': Read-only file system
+ls -l A in host | N/A
 write on $HOME  | OK: -rw-rw-r--. 1 root root 0 May  9 09:47 /root/A
 mkdir /home/foo | NG: mkdir: cannot create directory '/home/foo': Read-only file system
 dnf update etc. | NG: Config error: [Errno 30] Read-only file system: '/var/log/dnf.log': '/var/log/dnf.log'
@@ -55,6 +58,7 @@ ls -l1 /home    | empty
 df /home        | /dev/mapper/almalinux-root  14034944 11119552   2915392  80% /home
 df /root        | /dev/mapper/almalinux-root  14034944 11119552   2915392  80% /home
 touch /A        | OK: -rw-rw-r--. 1 root root 0 May  9 00:38 /A
+ls -l A in host | -rw-rw-r--. 1 sendai sendai 0 May 10 10:29 alma9-devel/A
 write on $HOME  | OK: -rw-rw-r--. 1 root root 0 May  9 09:47 /root/A
 mkdir /home/foo | OK: drwxrwxr-x. 2 sendai sendai 40 May  9 00:51 /home/foo
                 | df /home/foo: /dev/mapper/almalinux-root  14034944 11119552   2915392  80% /
@@ -76,6 +80,7 @@ ls -l1 /home    | sendai
 df /home        | tmpfs 16384    12     16372   1% /
 df /home/sendai | /dev/mapper/almalinux-root  14034944 11119552   2915392  80% /home
 touch /A        | NG: touch: cannot touch '/A': Read-only file system
+ls -l A in host | N/A
 write on $HOME  | OK: -rw-rw-r--. 1 sendai sendai 0 May  9 09:46 /home/sendai/A
 mkdir /home/foo | NG: mkdir: cannot create directory '/home/foo': Read-only file system
 dnf update etc. | NG: Error: This command has to be run with superuser privileges (under the root user on most systems).
@@ -92,6 +97,7 @@ ls -l1 /home    | empty
 df /home        | squashfuse_ll     903936 903936         0 100% /home
 df /root        | /dev/mapper/almalinux-root  14034944 11119552   2915392  80% /home
 touch /A        | NG: touch: cannot touch '/A': Read-only file system
+ls -l A in host | N/A
 write on $HOME  | OK: -rw-rw-r--. 1 root root 0 May  9 09:47 /root/A
 mkdir /home/foo | NG: mkdir: cannot create directory ‘/home/foo’: Function not implemented
 dnf update etc. | NG: Config error: [Errno 30] Read-only file system: '/var/log/dnf.log': '/var/log/dnf.log'
