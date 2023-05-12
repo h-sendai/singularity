@@ -470,3 +470,24 @@ yum install /etc/redhat-release coreutils yum \
 coreutilsの依存物などでAlmaLinux 9では153個のRPMパッケージ
 が入り、/usrで257MB消費する。
 パッケージキャッシュがはいっている/varは85MB消費する。
+
+## defファイルを使ってbuild時のhttp接続状況
+
+alma9-coreutils.def:
+```
+BootStrap: yum
+MirrorURL: http://ftp.riken.jp/Linux/almalinux/9/BaseOS/x86_64/os/
+Include: yum
+
+%runscript
+    echo "This is what happens when you run the container..."
+
+%post
+    echo "Hello from inside the container"
+```
+というdefファイルを使って、``apptainer build --sandbox alma9-coreutils alma9-coreutils.def``
+したときにftpサイトにどのファイルを取りにいっているかのログ:
+[apptainer-build-connection.txt](apptainer-build-connection.txt)
+
+ログはhttpry: https://github.com/jbittel/httpry で取得した。
+
