@@ -171,11 +171,16 @@ yumあるいはdnfがないシステム（たとえばArch Linux）ではホス�
 yum、dnfをインストールする必要がある（Arch Linuxでは
 ``pacman -S dnf``）。（注おわり）
 
-defファイルにエラーがある（存在しないパッケージ名を指定した、
+デフォルトではdefファイルにエラーがある（存在しないパッケージ名を指定した、
 yumコマンドをまちがって書いた）とbuildはそこで終了し、
 sandboxディレクトリも消去される（実際はbuild-temp-XXXXのような
 ディレクトリが作られ、成功するとコマンドラインで指定した
 名前にrenameされるようだ）。
+失敗したときにはテンポラリファイル群を残すようにするには
+```
+apptainer build --no-cleanup --sandbox fail fail.def
+```
+のように``--no-cleanup``をつける。
 
 ### shellで走らせてみる
 
