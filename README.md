@@ -476,7 +476,7 @@ coreutilsの依存物などでAlmaLinux 9では153個のRPMパッケージ
 が入り、/usrで257MB消費する。
 パッケージキャッシュがはいっている/varは85MB消費する。
 
-## defファイルを使ってbuild時のhttp接続状況
+### defファイルを使ってbuild時のhttp接続状況
 
 alma9-coreutils.def:
 ```
@@ -495,4 +495,46 @@ Include: yum
 [apptainer-build-connection.txt](apptainer-build-connection.txt)
 
 ログはhttpry: https://github.com/jbittel/httpry で取得した。
+
+### yum.conf
+
+```
+BootStrap: yum
+MirrorURL: http://nosuchhost.example.com/pub/linux/almalinux/9/BaseOS/x86_64/os/
+Include: yum
+%runscript
+    echo "This is what happens when you run the container..."
+%post
+    echo "Hello from inside the container"
+```
+のように失敗するdefファイルを作り
+```
+apptainer build --no-cleanup --sandbox fail fail.def
+```
+とするとカレントディレクトリに
+``build-temp-XXXXXXXXX``のようなディレクトリができ
+その下に``dev, etc, var``ディレクトリができている。
+その中にテンポラリなyum.confが
+``build-temp-XXXXXXXXX/rootfs/etc/bootstrap-yum.conf``
+というファイル名で残っている。中身は以下のようになっている:
+```
+[main]
+cachedir=/var/cache/yum-bootstrap
+keepcache=0
+debuglevel=2
+logfile=/var/log/yum.log
+syslog_device=/dev/null
+exactarch=1
+obsoletes=1
+gpgcheck=0
+plugins=1
+reposdir=0
+deltarpm=0
+
+[base]
+name=Linux $releasever - $basearch
+baseurl=http://nosuchhost.example.com/pub/linux/almalinux/9/BaseOS/x86_64/os/
+enabled=1
+gpgcheck=0
+```
 
