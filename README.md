@@ -142,6 +142,15 @@ RedisTimeSeriesをコンパイルしようとすると
 curlを使うのでcurl-minimalが入っている環境では
 手動で``yum remove curl-minimal``することができない。
 （例おわり）
+(注)
+と思っていたら``dnf swap``コマンドを使って
+```
+dnf swap libcurl-minimal libcurl
+dnf swap curl-minimal curl
+```
+とするとcurlについてminimalからfullへの置き換えが
+できることが判明した。
+(注おわり)
 
 イメージ作成にはまずdefファイルを作る。
 
